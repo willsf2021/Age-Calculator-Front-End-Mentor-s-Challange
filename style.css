@@ -1,0 +1,288 @@
+:root {
+  --purple: hsl(259, 100%, 65%);
+  --light-red: hsl(0, 100%, 67%);
+  --offwhite: hsl(0, 0%, 94%);
+  --light-grey: hsl(0, 0%, 86%);
+  --smokey-grey: hsl(0, 1%, 44%);
+  --off-black: hsl(0, 0%, 8%);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background-color: var(--light-grey);
+  height: 100vh;
+
+  main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    max-width: 100%;
+    article {
+      padding: 45px;
+      border-radius: 20px 20px 150px 20px;
+      background-color: white;
+      height: fit-content;
+      min-width: 530px;
+    }
+  }
+}
+
+#datas {
+  display: flex;
+  align-items: center;
+  column-gap: 20px;
+
+  .container {
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    max-width: 100px;
+    min-width: 100px;
+    row-gap: 5px;
+
+    .invalid-day,
+    .empty-day,
+    .invalid-date,
+    .empty-month,
+    .empty-year,
+    .invalid-month,
+    .invalid-year {
+      position: relative;
+      font-style: italic;
+      color: red;
+      font-size: 8px;
+      display: none;
+      bottom: 73%;
+    }
+
+    .invalid-date label {
+      letter-spacing: 0.2em;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--smokey-grey);
+    }
+
+    input {
+      border: 1px solid var(--light-grey);
+      height: 50px;
+      max-width: 100%;
+      border-radius: 5px;
+      padding-left: 12px;
+      font-size: 24px;
+      font-weight: 700;
+      cursor: pointer;
+
+      &::-webkit-inner-spin-button,
+      &::-webkit-outer-spin-button {
+        display: none;
+      }
+
+      &:focus {
+        outline: none;
+        border: 1px solid var(--purple);
+      }
+    }
+  }
+}
+#day-label,
+#month-label,
+#year-label {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--smokey-grey);
+  letter-spacing: 0.2em;
+}
+
+#calculate {
+  display: flex;
+  align-items: center;
+
+  #hr {
+    height: 1.6px;
+    background-color: var(--light-grey);
+    flex: 1;
+  }
+
+  #button-calculate {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--purple);
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    cursor: pointer;
+
+    &:active {
+      background-color: black;
+    }
+  }
+}
+
+#results {
+  font-style: italic;
+  font-weight: 800;
+  font-size: 80px;
+
+  .results {
+    color: var(--purple);
+  }
+}
+
+/* Media Queries for Mobile Devices */
+
+@media (max-width: 480px) {
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: var(--light-grey);
+    height: 100vh;
+    padding: 16px;
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      max-width: 100%;
+
+      article {
+        border-radius: 20px 20px 150px 20px;
+        background-color: white;
+        padding: 32px;
+        min-width: 100%;
+        max-width: 100%;
+        max-height: 100%;
+      }
+    }
+  }
+
+  #datas {
+    display: flex;
+    align-items: center;
+    column-gap: 16px;
+    max-width: 100%;
+
+    .container {
+      min-height: 100px;
+      display: flex;
+      flex-direction: column;
+      max-width: 80px;
+      min-width: 2px;
+      row-gap: 5px;
+
+      .invalid-day,
+      .empty-day,
+      .invalid-date,
+      .empty-month,
+      .empty-year,
+      .invalid-month,
+      .invalid-year {
+        position: relative;
+        font-style: italic;
+        color: red;
+        font-size: 8px;
+        bottom: 73%;
+        display: none;
+      }
+
+      .invalid-date label {
+        letter-spacing: 0.2em;
+        font-size: 8px;
+        font-weight: 600;
+        color: var(--smokey-grey);
+      }
+
+      input {
+        border: 1px solid var(--light-grey);
+        height: 48px;
+        max-width: 100%;
+        border-radius: 5px;
+        padding-left: 8px;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+
+        &::-webkit-inner-spin-button,
+        &::-webkit-outer-spin-button {
+          display: none;
+        }
+
+        &:focus {
+          outline: none;
+          border: 1px solid var(--purple);
+        }
+      }
+    }
+  }
+
+  #day-label,
+  #month-label,
+  #year-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--smokey-grey);
+  }
+  #calculate {
+    display: block;
+    width: 100%;
+    height: 70px;
+    #hr {
+      position: relative;
+      top: 35px;
+      height: 1.6px;
+      background-color: var(--light-grey);
+      width: 100%;
+      flex: 0;
+    }
+
+    #button-calculate {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--purple);
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      position: relative;
+      top: 7px;
+      margin: auto;
+      cursor: pointer;
+      img {
+        width: 60%;
+      }
+      &:active {
+        background-color: black;
+      }
+    }
+  }
+
+  #results {
+    font-style: italic;
+    font-weight: 800;
+    font-size: 40px;
+
+    .results {
+      color: var(--purple);
+    }
+  }
+
+  .attribution {
+    font-size: 11px;
+    text-align: center;
+  }
+  .attribution a {
+    color: hsl(228, 45%, 44%);
+  }
+}
