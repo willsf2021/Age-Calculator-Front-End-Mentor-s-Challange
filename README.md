@@ -35,12 +35,12 @@ Users should be able to:
 
 ### Screenshot
 
-![](./design/desktop-completed.jpg)
+![](./screenshot.png)
 
 ### Links
 
-- Solution URL:
-- Live Site URL:
+- Solution URL: https://github.com/willsf2021/Age-Calculator-Front-End-Mentor-s-Challange/
+- Live Site URL: https://willsf2021.github.io/Age-Calculator-Front-End-Mentor-s-Challange/
 
 ## My process
 
