@@ -138,6 +138,47 @@ body {
     color: var(--purple);
   }
 }
+#chk {
+  width: 60px;
+  height: 30px;
+  appearance: none;
+  background-color: var(--purple);
+  border-radius: 30px;
+  cursor: pointer;
+  transition: 0.4s;
+  position: relative;
+
+  &:checked #pt-br {
+    background-color: var(--purple);
+  }
+  &:before {
+    content: "";
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    border-radius: 30px;
+    position: absolute;
+    box-shadow: 0px 4px 8px 1px rgba(0, 0, 0, 0.25);
+    top: 0;
+    left: 0;
+    transition: 0.4s;
+  }
+}
+#chk:checked:before {
+  left: 30px;
+}
+#button-chk {
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  column-gap: 4px;
+  position: relative;
+  left: 75%;
+  font-size: 16px;
+  color: var(--smokey-grey);
+}
 
 /* Media Queries for Mobile Devices */
 
