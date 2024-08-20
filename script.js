@@ -1,49 +1,42 @@
-// Input elements for day, month, and year
-let dayInput = document.querySelector("#day-input");
-let monthInput = document.querySelector("#month-input");
-let yearInput = document.querySelector("#year-input");
+// Seletor de inputs e labels
+const dayInput = document.querySelector("#day-input");
+const monthInput = document.querySelector("#month-input");
+const yearInput = document.querySelector("#year-input");
 
-// Arrays for easy access to inputs and labels
-let inputs = [dayInput, monthInput, yearInput];
-let dayLabel = document.querySelector("#day-label");
-let monthLabel = document.querySelector("#month-label");
-let yearLabel = document.querySelector("#year-label");
-let labels = [dayLabel, monthLabel, yearLabel];
+const dayLabel = document.querySelector("#day-label");
+const monthLabel = document.querySelector("#month-label");
+const yearLabel = document.querySelector("#year-label");
 
-// Error message elements for empty fields
-let emptyDay = document.querySelector(".empty-day");
-let emptyMonth = document.querySelector(".empty-month");
-let emptyYear = document.querySelector(".empty-year");
-let emptys = [emptyDay, emptyMonth, emptyYear];
+const inputs = [dayInput, monthInput, yearInput];
+const labels = [dayLabel, monthLabel, yearLabel];
 
-// Error message elements for invalid data
-let invalidMonth = document.querySelector(".invalid-month");
-let invalidDay = document.querySelector(".invalid-day");
-let invalidDate = document.querySelector(".invalid-date");
-let invalidYear = document.querySelector(".invalid-year");
+// Funções de validação
+const invalidMessages = {
+  day: document.querySelector(".invalid-day"),
+  month: document.querySelector(".invalid-month"),
+  date: document.querySelector(".invalid-date"),
+  year: document.querySelector(".invalid-year"),
+};
 
-// Constants for the current date
+const emptyMessages = {
+  day: document.querySelector(".empty-day"),
+  month: document.querySelector(".empty-month"),
+  year: document.querySelector(".empty-year"),
+};
+
+// Constantes para data atual
 const currentYear = new Date().getFullYear();
-const currentMonth = new Date().getMonth();
+const currentMonth = new Date().getMonth() + 1;
 const currentDay = new Date().getDate();
 
-// Main function to validate inputs and calculate age
-function calculate() {
-  if (validate()) {
-    calculateAge();
-  }
-}
-
-// Function to validate the year input
+// Função para validar ano
 function validateYear() {
   if (yearInput.value > currentYear) {
-    invalidYear.style.display = "block";
-    yearInput.style.border = "1px solid red";
-    yearLabel.style.color = "red";
+    showError(invalidMessages.year, yearInput, yearLabel);
   }
 }
 
-// Function to check if the provided date is valid
+// Função para verificar se a data é válida
 function isValidDate(day, month, year) {
   const date = new Date(year, month - 1, day);
   return (
@@ -53,88 +46,64 @@ function isValidDate(day, month, year) {
   );
 }
 
-// Function to validate all inputs and show appropriate error messages
+// Função de validação
 function validate() {
   let isValid = true;
   clearErrors();
 
-  // Check if day input is valid
   if (dayInput.value > 31) {
-    invalidDay.style.display = "block";
-    dayInput.style.border = "1px solid red";
-    dayLabel.style.color = "red";
+    showError(invalidMessages.day, dayInput, dayLabel);
     isValid = false;
   }
 
-  // Check if month input is valid
   if (monthInput.value > 12) {
-    invalidMonth.style.display = "block";
-    monthInput.style.border = "1px solid red";
-    monthLabel.style.color = "red";
+    showError(invalidMessages.month, monthInput, monthLabel);
     isValid = false;
   }
 
-  // Check if any input is empty
-  for (let i = 0; i < inputs.length; i++) {
-    if (inputs[i].value <= 0) {
-      inputs[i].style.border = "1px solid red";
-      labels[i].style.color = "red";
-      emptys[i].style.display = "block";
+  inputs.forEach((input, index) => {
+    if (input.value <= 0) {
+      showError(
+        emptyMessages[labels[index].htmlFor.split("-")[0]],
+        input,
+        labels[index]
+      );
       isValid = false;
     }
-  }
+  });
 
-  // Check if the full date is valid
   if (
     isValid &&
     !isValidDate(dayInput.value, monthInput.value, yearInput.value)
   ) {
-    invalidDate.style.display = "block";
-    dayInput.style.border = "1px solid red";
-    dayLabel.style.color = "red";
-    monthInput.style.border = "1px solid red";
-    monthLabel.style.color = "red";
-    yearInput.style.border = "1px solid red";
-    yearLabel.style.color = "red";
+    showError(invalidMessages.date, dayInput, dayLabel);
+    showError(invalidMessages.date, monthInput, monthLabel);
+    showError(invalidMessages.date, yearInput, yearLabel);
     isValid = false;
   }
 
-  // Validate the year separately
   validateYear();
 
   return isValid;
 }
 
-// Function to clear all error messages and styles
-function clearErrors() {
-  let errorMessages = [
-    invalidDay,
-    invalidMonth,
-    invalidDate,
-    invalidYear,
-    emptyDay,
-    emptyMonth,
-    emptyYear,
-  ];
-  for (let error of errorMessages) {
-    error.style.display = "none";
-  }
-
-  for (let input of inputs) {
-    input.style.border = "";
-  }
-
-  for (let label of labels) {
-    label.style.color = "";
-  }
+// Função para exibir erros
+function showError(messageElement, inputElement, labelElement) {
+  messageElement.style.display = "block";
+  inputElement.style.border = "1px solid red";
+  labelElement.style.color = "red";
 }
 
-// Elements for displaying the age results
-let daySpan = document.querySelector(".dayr");
-let monthSpan = document.querySelector(".monthr");
-let yearSpan = document.querySelector(".yearr");
+// Função para limpar erros
+function clearErrors() {
+  Object.values(invalidMessages).forEach((msg) => (msg.style.display = "none"));
+  Object.values(emptyMessages).forEach((msg) => (msg.style.display = "none"));
 
-// Function to calculate age based on the input date
+  inputs.forEach((input) => (input.style.border = ""));
+  labels.forEach((label) => (label.style.color = ""));
+}
+
+// Função para calcular idade
 function calculateAge() {
   const today = new Date();
   const birthDate = new Date(
@@ -148,33 +117,113 @@ function calculateAge() {
     const monthDifference = today.getMonth() - birthDate.getMonth();
     const dayDifference = today.getDate() - birthDate.getDate();
 
-    // Adjust age if the current month or day is before the birth month or day
     if (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0)) {
       age--;
     }
 
-    // Calculate month difference
     let month = monthDifference < 0 ? 12 + monthDifference : monthDifference;
     if (dayDifference < 0) {
       month--;
       if (month < 0) month = 11;
     }
 
-    // Calculate day difference
     let day =
       dayDifference < 0
         ? new Date(today.getFullYear(), today.getMonth(), 0).getDate() +
           dayDifference
         : dayDifference;
 
-    // Display the calculated age
-    daySpan.textContent = day >= 0 ? day : "--";
-    monthSpan.textContent = month >= 0 ? month : "--";
-    yearSpan.textContent = age >= 0 ? age : "--";
+    document.querySelector(".dayr").textContent = day >= 0 ? day : "--";
+    document.querySelector(".monthr").textContent = month >= 0 ? month : "--";
+    document.querySelector(".yearr").textContent = age >= 0 ? age : "--";
   } else {
-    // Clear age display if the date is invalid
-    daySpan.textContent = "--";
-    monthSpan.textContent = "--";
-    yearSpan.textContent = "--";
+    document.querySelector(".dayr").textContent = "--";
+    document.querySelector(".monthr").textContent = "--";
+    document.querySelector(".yearr").textContent = "--";
   }
 }
+
+// Listener para o botão de cálculo
+document
+  .getElementById("button-calculate")
+  .addEventListener("click", function () {
+    if (validate()) {
+      calculateAge();
+    }
+  });
+
+// Listener para o switch de idioma
+document.getElementById("chk").addEventListener("change", function () {
+  const isChecked = this.checked;
+
+  const translations = {
+    en: {
+      dayLabel: "DAY",
+      monthLabel: "MONTH",
+      yearLabel: "YEAR",
+      placeholders: { day: "DD", month: "MM", year: "YYYY" },
+      emptyDay: "This field is required",
+      emptyMonth: "This field is required",
+      emptyYear: "This field is required",
+      invalidDay: "Must be a valid day",
+      invalidMonth: "Must be a valid month",
+      invalidDate: "Must be a valid date",
+      invalidYear: "Must be in past",
+      results: {
+        years: "years",
+        months: "months",
+        days: "days",
+      },
+    },
+    pt: {
+      dayLabel: "DIA",
+      monthLabel: "MÊS",
+      yearLabel: "ANO",
+      placeholders: { day: "DD", month: "MM", year: "AAAA" },
+      emptyDay: "Este campo é obrigatório",
+      emptyMonth: "Este campo é obrigatório",
+      emptyYear: "Este campo é obrigatório",
+      invalidDay: "Deve ser um dia válido",
+      invalidMonth: "Deve ser um mês válido",
+      invalidDate: "Deve ser uma data válida",
+      invalidYear: "Deve estar no passado",
+      results: {
+        years: "anos",
+        months: "meses",
+        days: "dias",
+      },
+    },
+  };
+
+  const lang = isChecked ? translations.pt : translations.en;
+
+  // Atualizar labels e placeholders
+  dayLabel.textContent = lang.dayLabel;
+  monthLabel.textContent = lang.monthLabel;
+  yearLabel.textContent = lang.yearLabel;
+
+  dayInput.placeholder = lang.placeholders.day;
+  monthInput.placeholder = lang.placeholders.month;
+  yearInput.placeholder = lang.placeholders.year;
+
+  // Atualizar mensagens de erro
+  emptyMessages.day.textContent = lang.emptyDay;
+  emptyMessages.month.textContent = lang.emptyMonth;
+  emptyMessages.year.textContent = lang.emptyYear;
+
+  invalidMessages.day.textContent = lang.invalidDay;
+  invalidMessages.month.textContent = lang.invalidMonth;
+  invalidMessages.date.textContent = lang.invalidDate;
+  invalidMessages.year.textContent = lang.invalidYear;
+
+  // Atualizar resultados
+  document.querySelector(
+    "#results p:nth-child(1)"
+  ).innerHTML = `<span class="results yearr">--</span> ${lang.results.years}`;
+  document.querySelector(
+    "#results p:nth-child(2)"
+  ).innerHTML = `<span class="results monthr">--</span> ${lang.results.months}`;
+  document.querySelector(
+    "#results p:nth-child(3)"
+  ).innerHTML = `<span class="results dayr">--</span> ${lang.results.days}`;
+});
